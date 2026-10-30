@@ -1,0 +1,122 @@
+# BOUTUTLN default settings (committed). Safe defaults only - no secrets here.
+# Put personal overrides in config/local.toml (git-ignored).
+
+environment = "development"   # "production" on the Windows PC
+secret_store = "keyring"      # Windows Credential Manager
+
+[trading]
+mode = "backtest"             # "backtest" or "paper". "live" is locked in this build.
+
+[paths]
+data_dir = "data"             # relative to the project root; git-ignored
+
+[kb]
+network_enabled = false       # P0: no real KB network calls
+# ip_addr / mac_addr: header values required by KB; exact rules unverified (kb research 7.4)
+max_requests_per_second = 1
+
+[ai]
+enabled = false               # turn on only after the local benchmark passes (PLAN 12.7)
+provider = "ollama"
+endpoint = "http://127.0.0.1:11434"
+lambda = "0.5"
+candidates_from_quant = 30
+deep_analysis_count = 12
+time_budget_minutes = 30
+think = false                 # P2 compares think=false vs think=true; default unchanged
+
+[ai.options]
+num_ctx = 8192
+temperature = "0.1"
+seed = 42
+num_predict = 800
+
+# Exact tags from ollama.com/library. Fill digest after `ollama pull` (see `boututln ai-check`).
+[[ai.models]]
+role = "primary"
+tag = "qwen3.5:9b-q4_K_M"
+quantization = "Q4_K_M"
+
+[[ai.models]]
+role = "comparison"
+tag = "gemma4:12b-it-q4_K_M"
+quantization = "Q4_K_M"
+
+[[ai.models]]
+role = "fallback"
+tag = "qwen3.5:4b-q4_K_M"
+quantization = "Q4_K_M"
+
+[scheduler]
+daily_run_time = "07:30"
+markets = ["KR", "US"]
+missed_session_policy = "skip"
+
+[paper]
+initial_cash_krw = "10000000"   # KRW book starting cash (whole won)
+initial_cash_usd = "7000.00"    # USD book starting cash
+
+[dashboard]
+host = "127.0.0.1"
+port = 8765
+
+# Data providers and cost classes (docs/data-provider-comparison.md).
+# "paid" and "unknown" are blocked unless approved in config/approvals/paid_services.toml.
+# Limits are set below the published/known free limits on purpose.
+
+[[providers]]
+name = "kb_openapi"
+cost_class = "unknown"        # fee clause exists (terms Art.11), amount not published
+hosts = ["developer.kbsec.com"]
+license_tag = "personal_only"
+note = "KB terms Art.5(3): own investing only, no redistribution"
+
+[[providers]]
+name = "opendart"
+cost_class = "free_limited"
+hosts = ["opendart.fss.or.kr"]
+daily_limit = 10000           # widely cited 20,000/day is unverified
+license_tag = "public_disclosure"
+
+[[providers]]
+name = "sec_edgar"
+cost_class = "free_limited"
+hosts = ["data.sec.gov", "www.sec.gov"]
+per_second_limit = 5          # SEC fair access: max 10/s
+license_tag = "public"
+
+[[providers]]
+name = "fred"
+cost_class = "free_limited"
+hosts = ["api.stlouisfed.org"]
+per_minute_limit = 60         # commonly cited 120/min (unverified)
+license_tag = "series_specific"
+
+[[providers]]
+name = "ecos"
+cost_class = "free_limited"
+hosts = ["ecos.bok.or.kr"]
+daily_limit = 1000            # official limit not found; conservative
+license_tag = "public"
+
+[[providers]]
+name = "pykrx"
+cost_class = "conditional_free"
+hosts = ["data.krx.co.kr"]
+daily_limit = 2000
+license_tag = "personal_only"
+note = "unofficial; KRX forbids redistribution"
+
+[[providers]]
+name = "yfinance"
+cost_class = "conditional_free"
+hosts = ["query1.finance.yahoo.com", "query2.finance.yahoo.com"]
+daily_limit = 2000
+license_tag = "personal_only"
+
+[[providers]]
+name = "naver_search"
+cost_class = "free_limited"
+hosts = ["openapi.naver.com"]
+daily_limit = 20000           # reported 25,000/day per app
+license_tag = "titles_only"

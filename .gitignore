@@ -1,0 +1,33 @@
+# Python / tooling
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Local data: market data, databases, logs, backups (never commit - KB terms Art.5(3))
+data/
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.parquet
+*.duckdb
+logs/
+backups/
+
+# Secrets and local overrides
+.env
+.env.*
+config/local.toml
+config/approvals/*.toml
+!config/approvals/README.md
+*.pem
+*.key
+
+# Official KB sample responses downloaded by the user (local only)
+tests/local_kb_samples/

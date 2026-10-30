@@ -1,0 +1,70 @@
+[project]
+name = "boututln"
+version = "0.0.1"
+description = "AI Stock Trader (v0.5 Free Edition) - P0 foundation: backtest and paper trading only"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "Proprietary - personal use" }
+dependencies = [
+    "pydantic>=2.7,<3",
+    "sqlalchemy>=2.0,<2.1",
+    "alembic>=1.13,<2",
+    "httpx>=0.27,<1",
+    "duckdb>=1.0,<2",
+    "pyarrow>=16",
+    "pandas>=2.2,<3",
+    "polars>=1.0,<2",
+    "fastapi>=0.110,<1",
+    "uvicorn>=0.29,<1",
+    "keyring>=25,<26",
+    "exchange-calendars>=4.5,<5",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8,<9",
+    "ruff>=0.6",
+    "mypy>=1.10",
+]
+
+[project.scripts]
+boututln = "boututln.app.cli:main"
+
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/boututln"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+filterwarnings = [
+    "ignore::DeprecationWarning:exchange_calendars.*",
+    "ignore:Using `httpx` with `starlette.testclient`",
+]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "BLE", "DTZ"]
+ignore = ["S101"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S105", "S106", "S108", "S104", "DTZ001"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["boututln"]
+mypy_path = "src"
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["exchange_calendars.*", "keyring.*", "pyarrow.*", "duckdb.*", "pandas.*"]
+ignore_missing_imports = true

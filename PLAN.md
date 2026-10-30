@@ -1,6 +1,6 @@
 # AI 자율 주식 매매 시스템 — 프로젝트 계획서 (v0.5 Free Edition)
 
-> 상태: **검토 대기 (P0 미착수)** · 최종 수정일: 2026-10-30 (로컬 AI 구현 설정 확정 반영)
+> 상태: **P0 구현 완료(검토 대기)** — 브랜치 `feature/p0-foundation`, 구현 기록은 [docs/p0-implementation.md](docs/p0-implementation.md) · 최종 수정일: 2026-10-30
 > 이전 판(v0.4, 클라우드·PostgreSQL·유료 API 기준)은 [docs/archive/v0.4/PLAN-v0.4.md](docs/archive/v0.4/PLAN-v0.4.md)에 그대로 보존했습니다. v0.4의 설계는 삭제하지 않았으며, 향후 서버 이전이나 유료 옵션을 검토할 때 다시 사용합니다.
 >
 > 상세 문서

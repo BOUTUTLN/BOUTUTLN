@@ -1,0 +1,18 @@
+# Copy to config/local.toml (git-ignored) on your Windows PC and edit.
+environment = "production"
+secret_store = "keyring"
+
+[trading]
+mode = "paper"                  # "backtest" or "paper" only
+
+[paper]                         # starting cash per book (quoted decimals, no floats)
+initial_cash_krw = "10000000"
+initial_cash_usd = "7000.00"
+
+# After `ollama pull`, run `uv run boututln ai-check` and paste the digest prefixes.
+# A list in local.toml replaces the whole list, so repeat all three models:
+# [[ai.models]]
+# role = "primary"
+# tag = "qwen3.5:9b-q4_K_M"
+# digest = "56671c2ab938"
+# ...
